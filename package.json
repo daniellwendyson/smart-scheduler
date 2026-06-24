@@ -9,6 +9,7 @@
     "services:up": "docker compose -f compose.yaml up -d",
     "services:stop": "docker compose -f compose.yaml stop",
     "services:down": "docker compose -f compose.yaml down",
+    "prepare": "husky",
     "commit": "cz"
   },
   "dependencies": {
@@ -18,8 +19,11 @@
     "pg": "^8.22.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.1.7",
     "nodemon": "^3.1.14"
   },
   "config": {
