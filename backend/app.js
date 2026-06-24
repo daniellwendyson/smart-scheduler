@@ -2,11 +2,13 @@ const express = require("express");
 const cors = require("cors");
 
 const database = require("./database.js");
+const appointmentRoutes = require("./routes/appointmentRoutes.js");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(appointmentRoutes);
 
 app.get("/health", (request, response) => {
   return response.status(200).json({
