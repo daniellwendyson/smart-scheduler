@@ -1,0 +1,30 @@
+{
+  "name": "smart-scheduler",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Service appointment scheduling system.",
+  "scripts": {
+    "dev:backend": "nodemon backend/server.js",
+    "start": "node backend/server.js",
+    "services:up": "docker compose -f compose.yaml up -d",
+    "services:stop": "docker compose -f compose.yaml stop",
+    "services:down": "docker compose -f compose.yaml down",
+    "commit": "cz"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "nodemon": "^3.1.14"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
