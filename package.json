@@ -9,6 +9,9 @@
     "services:up": "docker compose -f compose.yaml up -d",
     "services:stop": "docker compose -f compose.yaml stop",
     "services:down": "docker compose -f compose.yaml down",
+    "migrations:create": "node-pg-migrate -m backend/migrations create",
+    "migrations:up": "node-pg-migrate -m backend/migrations --envPath .env.development up",
+    "migrations:down": "node-pg-migrate -m backend/migrations --envPath .env.development down",
     "prepare": "husky",
     "commit": "cz"
   },
@@ -24,6 +27,7 @@
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
+    "node-pg-migrate": "^8.0.4",
     "nodemon": "^3.1.14"
   },
   "config": {
