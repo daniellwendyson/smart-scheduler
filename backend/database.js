@@ -1,7 +1,7 @@
 const envPath =
   process.env.NODE_ENV === "test" ? ".env.test" : ".env.development";
 
-require("dotenv").config({ path: ".env.development" });
+require("dotenv").config({ path: envPath });
 
 const { Pool } = require("pg");
 
