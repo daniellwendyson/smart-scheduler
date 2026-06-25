@@ -15,7 +15,13 @@ body {
     "Segoe UI",
     sans-serif;
   color: #172033;
-  background: #f4f7fb;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(49, 95, 189, 0.12),
+      transparent 34rem
+    ),
+    linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
 }
 
 button,
@@ -52,7 +58,8 @@ button {
 .hero h1 {
   margin: 0;
   font-size: clamp(2rem, 4vw, 3.3rem);
-  line-height: 1;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
 }
 
 .hero p:last-child {
@@ -70,15 +77,34 @@ button {
 
 .appointment-form,
 .appointment-list {
-  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  padding: 26px;
   border: 1px solid #dce4f2;
   border-radius: 8px;
   background: #ffffff;
+  box-shadow:
+    0 16px 36px rgba(23, 32, 51, 0.08),
+    0 2px 8px rgba(23, 32, 51, 0.04);
+}
+
+.appointment-form::before,
+.appointment-list::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #315fbd, #6f9cf5);
 }
 
 .appointment-form h2,
 .appointment-list h2 {
   margin: 0 0 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eef2f7;
+  font-size: 1.25rem;
 }
 
 .appointment-form {
@@ -97,9 +123,19 @@ button {
   width: 100%;
   border: 1px solid #c8d2e2;
   border-radius: 6px;
-  padding: 12px;
+  padding: 12px 13px;
   color: #172033;
   background: #ffffff;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.appointment-form input:focus,
+.appointment-form textarea:focus {
+  border-color: #315fbd;
+  box-shadow: 0 0 0 3px rgba(49, 95, 189, 0.14);
 }
 
 .appointment-form button {
@@ -107,6 +143,14 @@ button {
   font-weight: 700;
   color: #ffffff;
   background: #315fbd;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.appointment-form button:hover:not(:disabled) {
+  background: #244a99;
+  transform: translateY(-1px);
 }
 
 .appointment-form button:disabled {
@@ -116,13 +160,28 @@ button {
 
 .feedback {
   margin: 0;
-  color: #315fbd;
+  padding: 12px;
+  border-radius: 6px;
   font-weight: 700;
+}
+
+.feedback-success {
+  color: #067647;
+  background: #dcfae6;
+}
+
+.feedback-error {
+  color: #b42318;
+  background: #fee4e2;
 }
 
 .empty-state {
   margin: 0;
+  padding: 20px;
+  border: 1px dashed #c8d2e2;
+  border-radius: 8px;
   color: #5f6b7a;
+  background: #f8fafc;
 }
 
 .appointment-list ul {
@@ -137,14 +196,20 @@ button {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  padding: 16px;
+  padding: 18px;
   border: 1px solid #e1e7f0;
   border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 24px rgba(23, 32, 51, 0.04);
 }
 
 .appointment-list strong,
 .appointment-list span {
   display: block;
+}
+
+.appointment-list strong {
+  font-size: 1.02rem;
 }
 
 .appointment-list span {
@@ -161,6 +226,14 @@ button {
   padding: 8px 12px;
   color: #b42318;
   background: #fee4e2;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.appointment-list button:hover {
+  background: #fecdca;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 760px) {

@@ -16,7 +16,7 @@ const initialFormData = {
 function App() {
   const [appointments, setAppointments] = useState([]);
   const [formData, setFormData] = useState(initialFormData);
-  const [feedback, setFeedback] = useState("");
+  const [feedback, setFeedback] = useState({ type: "", message: "" });
   const [isLoading, setIsLoading] = useState(false);
 
   async function loadAppointments() {
@@ -26,9 +26,24 @@ function App() {
 
   useEffect(() => {
     loadAppointments().catch(() => {
-      setFeedback("Não foi possível carregar os agendamentos.");
+      setFeedback({
+        type: "error",
+        message: "Não foi possível carregar os agendamentos.",
+      });
     });
   }, []);
+
+  useEffect(() => {
+    if (!feedback.message) {
+      return undefined;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setFeedback({ type: "", message: "" });
+    }, 4000);
+
+    return () => clearTimeout(timeoutId);
+  }, [feedback.message]);
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -42,29 +57,41 @@ function App() {
   async function handleSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
-    setFeedback("");
+    setFeedback({ type: "", message: "" });
 
     try {
       await createAppointment(formData);
       setFormData(initialFormData);
-      setFeedback("Agendamento criado com sucesso.");
+      setFeedback({
+        type: "success",
+        message: "Agendamento criado com sucesso.",
+      });
       await loadAppointments();
     } catch (error) {
-      setFeedback(error.message);
+      setFeedback({
+        type: "error",
+        message: error.message,
+      });
     } finally {
       setIsLoading(false);
     }
   }
 
   async function handleDelete(id) {
-    setFeedback("");
+    setFeedback({ type: "", message: "" });
 
     try {
       await deleteAppointment(id);
-      setFeedback("Agendamento excluído com sucesso.");
+      setFeedback({
+        type: "success",
+        message: "Agendamento excluído com sucesso.",
+      });
       await loadAppointments();
     } catch (error) {
-      setFeedback(error.message);
+      setFeedback({
+        type: "error",
+        message: error.message,
+      });
     }
   }
 
@@ -128,7 +155,11 @@ function App() {
             {isLoading ? "Salvando..." : "Cadastrar"}
           </button>
 
-          {feedback && <p className="feedback">{feedback}</p>}
+          {feedback.message && (
+            <p className={`feedback feedback-${feedback.type}`}>
+              {feedback.message}
+            </p>
+          )}
         </form>
 
         <section className="appointment-list">
