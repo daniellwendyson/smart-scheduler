@@ -63,6 +63,20 @@ describe("Appointments API", () => {
     expect(response.body).toHaveProperty("message");
   });
 
+  it("Não deveria criar uma consulta para hoje com horário passado", async () => {
+    const today = new Date().toISOString().split("T")[0];
+
+    const response = await request(app).post("/appointments").send({
+      clientName: "Ana Lima",
+      appointmentDate: today,
+      appointmentTime: "00:00",
+      serviceDescription: "Manicure",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty("message");
+  });
+
   it("Deveria deletar uma consulta", async () => {
     const createResponse = await request(app).post("/appointments").send({
       clientName: "Carlos Mendes",
