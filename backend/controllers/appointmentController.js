@@ -1,12 +1,17 @@
 const appointmentModel = require("../models/appointmentModel");
 
-function isPastDate(date) {
-  const today = new Date();
-  const appointmentDate = new Date(`${date}T00:00:00`);
+const fieldLabels = {
+  clientName: "cliente",
+  appointmentDate: "data",
+  appointmentTime: "hora",
+  serviceDescription: "descrição do serviço",
+};
 
-  today.setHours(0, 0, 0, 0);
+function isPastAppointment(date, time) {
+  const appointmentDateTime = new Date(`${date}T${time}`);
+  const now = new Date();
 
-  return appointmentDate < today;
+  return appointmentDateTime < now;
 }
 
 function validateAppointment(data) {
@@ -20,17 +25,19 @@ function validateAppointment(data) {
   const missingFields = requiredFields.filter((field) => !data[field]);
 
   if (missingFields.length > 0) {
-    return `Preencha os campos faltantes: ${missingFields.join(", ")}`;
+    const formattedFields = missingFields.map((field) => fieldLabels[field]);
+
+    return `Preencha os campos obrigatórios: ${formattedFields.join(", ")}.`;
   }
 
-  if (isPastDate(data.appointmentDate)) {
-    return "A data da consulta não pode estar no passado.";
+  if (isPastAppointment(data.appointmentDate, data.appointmentTime)) {
+    return "A data e horário do agendamento não podem estar no passado.";
   }
 
   return null;
 }
 
-async function listAppointments(request, response) {
+async function listAppointments(_request, response) {
   const appointments = await appointmentModel.findAll();
 
   return response.status(200).json(appointments);
@@ -55,7 +62,7 @@ async function deleteAppointment(request, response) {
 
   if (!deleted) {
     return response.status(404).json({
-      message: "Consulta não encontrada",
+      message: "Agendamento não encontrado.",
     });
   }
 
