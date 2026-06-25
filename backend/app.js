@@ -25,7 +25,7 @@ app.get("/health/database", async (request, response) => {
       status: "ok",
       databaseTime: result.rows[0].now,
     });
-  } catch (error) {
+  } catch {
     return response.status(500).json({
       status: "error",
       message: "Conexão com o Banco de Dados falhou.",
