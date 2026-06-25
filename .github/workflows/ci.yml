@@ -56,7 +56,7 @@ jobs:
         run: npm run format:check
 
       - name: Run migrations
-        run: npm run migrations:up:test
+        run: npm run migrations:test
 
       - name: Run tests
         run: npm run test:ci
