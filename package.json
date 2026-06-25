@@ -4,7 +4,7 @@
   "private": true,
   "description": "Service appointment scheduling system.",
   "scripts": {
-    "dev:backend": "nodemon backend/server.js",
+    "dev:backend": "cross-env NODE_ENV=development nodemon backend/server.js",
     "start": "node backend/server.js",
     "services:up": "docker compose -f compose.yaml up -d",
     "services:stop": "docker compose -f compose.yaml stop",
@@ -12,6 +12,10 @@
     "migrations:create": "node-pg-migrate -m backend/migrations create",
     "migrations:up": "node-pg-migrate -m backend/migrations --envPath .env.development up",
     "migrations:down": "node-pg-migrate -m backend/migrations --envPath .env.development down",
+    "migrations:up:test": "node-pg-migrate -m backend/migrations --envPath .env.test up",
+    "migrations:down:test": "node-pg-migrate -m backend/migrations --envPath .env.test down",
+    "test": "cross-env NODE_ENV=test npm run migrations:up:test && cross-env NODE_ENV=test jest --runInBand --verbose",
+    "test:watch": "jest --watchAll --runInBand --verbose",
     "prepare": "husky",
     "commit": "cz"
   },
@@ -25,10 +29,13 @@
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
     "commitizen": "^4.3.1",
+    "cross-env": "^10.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
+    "jest": "^30.4.2",
     "node-pg-migrate": "^8.0.4",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
   },
   "config": {
     "commitizen": {

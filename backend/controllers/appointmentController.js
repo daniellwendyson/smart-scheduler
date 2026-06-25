@@ -1,4 +1,3 @@
-const app = require("../app");
 const appointmentModel = require("../models/appointmentModel");
 
 function isPastDate(date) {
