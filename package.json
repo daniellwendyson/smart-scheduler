@@ -14,6 +14,7 @@
     "services:down": "docker compose -f compose.yaml down",
     "migrations:create": "node-pg-migrate -m backend/migrations create",
     "migrations:up": "node-pg-migrate -m backend/migrations --envPath .env.development up",
+    "migrations:up:production": "node-pg-migrate -m backend/migrations up",
     "migrations:down": "node-pg-migrate -m backend/migrations --envPath .env.development down",
     "migrations:up:test": "node-pg-migrate -m backend/migrations --envPath .env.test up",
     "migrations:down:test": "node-pg-migrate -m backend/migrations --envPath .env.test down",
