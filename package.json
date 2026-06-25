@@ -5,6 +5,9 @@
   "description": "Service appointment scheduling system.",
   "scripts": {
     "dev:backend": "cross-env NODE_ENV=development nodemon backend/server.js",
+    "dev:frontend": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview",
     "start": "node backend/server.js",
     "services:up": "docker compose -f compose.yaml up -d",
     "services:stop": "docker compose -f compose.yaml stop",
@@ -28,12 +31,15 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "pg": "^8.22.0"
+    "pg": "^8.22.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.1.0",
     "@commitlint/config-conventional": "^21.1.0",
     "@eslint/js": "^10.0.1",
+    "@vitejs/plugin-react": "^5.2.0",
     "commitizen": "^4.3.1",
     "cross-env": "^10.1.0",
     "cz-conventional-changelog": "^3.3.0",
@@ -45,7 +51,8 @@
     "node-pg-migrate": "^8.0.4",
     "nodemon": "^3.1.14",
     "prettier": "^3.8.4",
-    "supertest": "^7.2.2"
+    "supertest": "^7.2.2",
+    "vite": "^7.3.6"
   },
   "config": {
     "commitizen": {
