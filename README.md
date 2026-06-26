@@ -1,18 +1,30 @@
 # Smart Scheduler
 
-Mini-system for managing service appointments, built as a technical challenge.
+Smart Scheduler é um mini-sistema de gestão de agendamentos de serviços desenvolvido como teste técnico. A aplicação permite criar, listar e excluir agendamentos, com validações no backend, testes automatizados, migrations SQL, lint, CI e deploy em produção.
 
-## Features
+## Demonstração
 
-- Create service appointments
-- List appointments
-- Delete appointments
-- Validate required fields
-- Prevent appointments in past dates
+- Frontend: https://smart-scheduler-bice.vercel.app/
+- API: https://smart-scheduler-api-6nzr.onrender.com
+- Vídeo demonstrativo: https://youtu.be/BNyE8WjcMjw
 
-## Stack
+[![Assista ao vídeo demonstrativo do Smart Scheduler](https://img.youtube.com/vi/BNyE8WjcMjw/maxresdefault.jpg)](https://youtu.be/BNyE8WjcMjw)
 
-- Node.js
+> Clique na imagem acima para assistir ao vídeo demonstrativo.
+
+## Funcionalidades
+
+- Criar agendamentos de serviços
+- Listar agendamentos ordenados por data e horário
+- Excluir agendamentos
+- Validar campos obrigatórios com mensagens amigáveis
+- Impedir agendamentos em datas passadas
+- Impedir agendamentos no dia atual com horário já passado
+- Exibir feedback visual de sucesso e erro
+
+## Tecnologias
+
+- Node.js 22
 - Express
 - React
 - Vite
@@ -24,116 +36,193 @@ Mini-system for managing service appointments, built as a technical challenge.
 - ESLint
 - Prettier
 - GitHub Actions
+- Render
+- Vercel
+- Neon
 
-## Requirements
+## Arquitetura
+
+O backend foi organizado com uma estrutura simples inspirada em MVC:
+
+```txt
+backend/
+  controllers/
+  models/
+  routes/
+  migrations/
+  app.js
+  database.js
+  server.js
+
+frontend/
+  services/
+  App.jsx
+  main.jsx
+  style.css
+
+tests/
+```
+
+- `routes`: define os endpoints da API.
+- `controllers`: trata requisições, respostas e validações.
+- `models`: concentra o acesso ao banco com SQL usando `pg`.
+- `migrations`: versiona a estrutura do banco.
+- `frontend/services`: centraliza as chamadas HTTP feitas pelo React.
+
+## Requisitos
 
 - Node.js 22
 - npm
 - Docker
 - Docker Compose
 
-## Environment Files
+## Variáveis De Ambiente
 
-The project uses two local environment files:
+O projeto possui dois arquivos locais versionados para facilitar a execução:
 
 - `.env.development`
 - `.env.test`
 
-Both files are committed with local Docker credentials for easier setup.
+As variáveis de produção são configuradas diretamente nas plataformas de deploy:
 
-## Install Dependencies
+- Render: `DATABASE_URL`, `NODE_ENV`, `CORS_ORIGIN`
+- Vercel: `VITE_API_URL`
+
+## Instalação
 
 ```bash
 npm install
 ```
 
-## Start The Database
+## Rodar A Aplicação Completa
+
+Este comando sobe o banco com Docker, executa as migrations de desenvolvimento e inicia backend e frontend:
 
 ```bash
-npm run services:up
+npm run dev
 ```
 
-## Run Migrations
-
-Development database:
-
-```bash
-npm run migrations:up
-```
-
-Test database:
-
-```bash
-npm run migrations:up:test
-```
-
-## Start The Backend
-
-```bash
-npm run dev:backend
-```
-
-Backend runs on:
+Backend:
 
 ```txt
 http://localhost:3000
 ```
 
-Health check routes:
-
-```txt
-GET /health
-GET /health/database
-```
-
-## Start The Frontend
-
-In another terminal:
-
-```bash
-npm run dev:frontend
-```
-
-Frontend runs on:
+Frontend:
 
 ```txt
 http://localhost:5173
 ```
 
-## Run Tests
+> No Windows, ao parar o `npm run dev` com `Ctrl+C`, o terminal pode perguntar `Deseja finalizar o arquivo em lotes (S/N)?`. Isso é um comportamento normal de scripts npm no Windows. Responda `S`.
+
+## Rodar Manualmente
+
+Subir banco:
+
+```bash
+npm run services:up
+```
+
+Rodar migrations:
+
+```bash
+npm run migrations:up
+```
+
+Iniciar backend:
+
+```bash
+npm run dev:backend
+```
+
+Iniciar frontend em outro terminal:
+
+```bash
+npm run dev:frontend
+```
+
+## Migrations
+
+Criar uma migration:
+
+```bash
+npm run migrations:create nome-da-migration
+```
+
+Rodar migrations no banco de desenvolvimento:
+
+```bash
+npm run migrations:up
+```
+
+Rodar migrations no banco de teste:
+
+```bash
+npm run migrations:test
+```
+
+Rodar migrations em produção:
+
+```bash
+npm run migrations:deploy
+```
+
+## Testes
 
 ```bash
 npm test
 ```
 
-## Run Lint And Format Checks
+O comando local de teste sobe o banco, executa as migrations de teste e roda o Jest.
+
+Os testes do backend usam um banco separado configurado em `.env.test`, evitando misturar dados de desenvolvimento com dados de teste.
+
+No CI, o workflow usa:
+
+```bash
+npm run test:ci
+```
+
+O `test:ci` executa apenas o Jest, porque o GitHub Actions já sobe o PostgreSQL e roda as migrations em etapas anteriores.
+
+## Qualidade De Código
+
+Rodar lint e verificação de formatação:
 
 ```bash
 npm run lint
 npm run format:check
 ```
 
-Auto-format files:
+Formatar arquivos automaticamente:
 
 ```bash
 npm run format:write
 ```
 
-## Build Frontend
+## Build Do Frontend
 
 ```bash
 npm run build
 ```
 
-## API Routes
+## Rotas Da API
 
-### List Appointments
+### Health Check
+
+```txt
+GET /health
+GET /health/database
+```
+
+### Listar Agendamentos
 
 ```txt
 GET /appointments
 ```
 
-### Create Appointment
+### Criar Agendamento
 
 ```txt
 POST /appointments
@@ -146,42 +235,85 @@ Body:
   "clientName": "Maria Silva",
   "appointmentDate": "2026-07-10",
   "appointmentTime": "14:30",
-  "serviceDescription": "Haircut"
+  "serviceDescription": "Corte de cabelo"
 }
 ```
 
-### Delete Appointment
+### Excluir Agendamento
 
 ```txt
 DELETE /appointments/:id
 ```
 
-## Database
+## Banco De Dados
 
-The project uses PostgreSQL with SQL migrations managed by `node-pg-migrate`.
+O projeto usa PostgreSQL com migrations gerenciadas pelo `node-pg-migrate`.
 
-Migration files are stored in:
+No ambiente local, o PostgreSQL roda com Docker Compose. Em produção, o banco está hospedado no Neon.
+
+As migrations ficam em:
 
 ```txt
 backend/migrations
 ```
 
-## Commit Convention
+## Testes Automatizados
 
-This project uses Commitizen and Conventional Commits.
+Os testes do backend foram escritos com Jest e Supertest.
+
+Cenários cobertos:
+
+- criação de agendamento
+- listagem de agendamentos
+- exclusão de agendamento
+- rejeição de campos obrigatórios ausentes
+- rejeição de datas passadas
+- rejeição de horário passado no dia atual
+
+## CI/CD
+
+O GitHub Actions roda em pull requests e pushes para a `main`.
+
+O workflow verifica:
+
+- lint
+- formatação
+- migrations do banco
+- testes do backend
+- build do frontend
+
+Deploy:
+
+- Frontend: Vercel
+- Backend: Render
+- Banco de dados: Neon
+
+## Padrão De Commits
+
+O projeto usa Commitizen e Conventional Commits.
 
 ```bash
 npm run commit
 ```
 
-## CI
+## Guia Do Vídeo Demonstrativo
 
-GitHub Actions runs on pull requests and pushes to `main`.
+Sugestão de duração: 3 a 5 minutos.
 
-The workflow checks:
+Fluxo recomendado:
 
-- lint
-- formatting
-- database migrations
-- backend tests
-- frontend build
+1. Abrir o frontend publicado e apresentar brevemente o Smart Scheduler.
+2. Explicar que a aplicação cria, lista e exclui agendamentos de serviços.
+3. Criar um agendamento válido e mostrar o feedback de sucesso.
+4. Tentar enviar o formulário com campo faltando e mostrar a validação amigável.
+5. Tentar uma data passada ou um horário passado no dia atual e explicar a regra de negócio.
+6. Excluir um agendamento e mostrar a lista atualizando.
+7. Mostrar a estrutura do backend e explicar a organização inspirada em MVC.
+8. Mostrar a migration e explicar por que migrations tornam o banco reproduzível.
+9. Mostrar os testes e mencionar o banco separado de teste.
+10. Mostrar o GitHub Actions passando.
+11. Explicar a arquitetura de deploy: Vercel para frontend, Render para backend e Neon para PostgreSQL.
+
+Explicação sugerida:
+
+> Mantive o projeto intencionalmente simples e alinhado ao escopo do desafio. O backend foi organizado com rotas, controllers e models para separar responsabilidades. As queries SQL usam parâmetros para evitar concatenação insegura de dados do usuário. A estrutura do banco é versionada com migrations, e os principais fluxos do backend são cobertos por testes automatizados. Também adicionei lint, formatação, CI e deploy para demonstrar um fluxo de desenvolvimento mais completo.
