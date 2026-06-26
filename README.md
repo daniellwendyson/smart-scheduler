@@ -114,8 +114,6 @@ Frontend:
 http://localhost:5173
 ```
 
-> No Windows, ao parar o `npm run dev` com `Ctrl+C`, o terminal pode perguntar `Deseja finalizar o arquivo em lotes (S/N)?`. Isso é um comportamento normal de scripts npm no Windows. Responda `S`.
-
 ## Rodar Manualmente
 
 Subir banco:
@@ -295,25 +293,3 @@ O projeto usa Commitizen e Conventional Commits.
 ```bash
 npm run commit
 ```
-
-## Guia Do Vídeo Demonstrativo
-
-Sugestão de duração: 3 a 5 minutos.
-
-Fluxo recomendado:
-
-1. Abrir o frontend publicado e apresentar brevemente o Smart Scheduler.
-2. Explicar que a aplicação cria, lista e exclui agendamentos de serviços.
-3. Criar um agendamento válido e mostrar o feedback de sucesso.
-4. Tentar enviar o formulário com campo faltando e mostrar a validação amigável.
-5. Tentar uma data passada ou um horário passado no dia atual e explicar a regra de negócio.
-6. Excluir um agendamento e mostrar a lista atualizando.
-7. Mostrar a estrutura do backend e explicar a organização inspirada em MVC.
-8. Mostrar a migration e explicar por que migrations tornam o banco reproduzível.
-9. Mostrar os testes e mencionar o banco separado de teste.
-10. Mostrar o GitHub Actions passando.
-11. Explicar a arquitetura de deploy: Vercel para frontend, Render para backend e Neon para PostgreSQL.
-
-Explicação sugerida:
-
-> Mantive o projeto intencionalmente simples e alinhado ao escopo do desafio. O backend foi organizado com rotas, controllers e models para separar responsabilidades. As queries SQL usam parâmetros para evitar concatenação insegura de dados do usuário. A estrutura do banco é versionada com migrations, e os principais fluxos do backend são cobertos por testes automatizados. Também adicionei lint, formatação, CI e deploy para demonstrar um fluxo de desenvolvimento mais completo.
